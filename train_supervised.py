@@ -87,6 +87,7 @@ parser.add_argument('--new_node', action='store_true', help='model new node')
 parser.add_argument('--seed', type=int, default=0, help='Seed for all')
 # parser.add_argument('--node_dim', type=int, default=100, help='Dimensions of the node embedding')
 parser.add_argument('--edge_dim', type=int, default=64, help='Dimensions of the node embedding')
+parser.add_argument('--pos_weight', type=float, default=1., help='Dropout probability')
 
 try:
     args = parser.parse_args()
@@ -163,10 +164,11 @@ for i in range(args.n_runs):
     Path("results/").mkdir(parents=True, exist_ok=True)
     logger.info('-'*50)
     logger.info(f'Run {i}:')
+    set_seed(i)
 
     # Initialize Model
     tgn = TGN(neighbor_finder=train_ngh_finder, node_features=node_features, node_dim=args.node_dim, edge_dim=args.edge_dim,
-              edge_features=edge_type, device=device,
+              edge_type=edge_type, device=device,
               n_layers=NUM_LAYER,
               n_heads=NUM_HEADS, dropout=DROP_OUT, use_memory=USE_MEMORY,
               message_dimension=MESSAGE_DIM, memory_dimension=MEMORY_DIM,
@@ -195,10 +197,11 @@ for i in range(args.n_runs):
     logger.info('TGN models loaded')
     logger.info('Start training node classification task')
 
-    decoder = MLP(node_features.shape[1], drop=DROP_OUT)
+    decoder = MLP(args.node_dim, drop=DROP_OUT) # node_features.shape[1]
     decoder_optimizer = torch.optim.Adam(decoder.parameters(), lr=args.lr)
     decoder = decoder.to(device)
-    decoder_loss_criterion = torch.nn.BCELoss()
+    # decoder_loss_criterion = torch.nn.BCELoss()
+    decoder_loss_criterion = torch.nn.BCEWithLogitsLoss(pos_weight=torch.tensor([args.pos_weight]).to(device))
 
     val_aucs = []
     train_losses = []
@@ -237,7 +240,8 @@ for i in range(args.n_runs):
                                                                                              NUM_NEIGHBORS)
 
             labels_batch_torch = torch.from_numpy(labels_batch).float().to(device)
-            pred = decoder(source_embedding).sigmoid()
+            # pred = decoder(source_embedding).sigmoid()
+            pred = decoder(source_embedding)
             decoder_loss = decoder_loss_criterion(pred, labels_batch_torch)
             decoder_loss.backward()
             decoder_optimizer.step()

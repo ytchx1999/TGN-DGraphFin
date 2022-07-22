@@ -36,7 +36,7 @@ class TGN(torch.nn.Module):
         # self.edge_embedding = torch.nn.Embedding(edge_type.max() + 5, edge_dim).to(device) # torch.from_numpy(edge_features.astype(np.float32)).to(device)
         # torch.nn.init.xavier_normal_(self.edge_embedding.weight)
 
-        self.n_node_features = node_dim # self.node_raw_features.shape[1]
+        self.n_node_features = node_dim # self.node_raw_features.shape[1] # 
         self.fc_nodes_feat = torch.nn.Linear(self.node_raw_features.shape[1], node_dim)
         self.n_nodes = self.node_raw_features.shape[0]
         self.n_edge_features = self.edge_raw_features.shape[1] # edge_dim  # 

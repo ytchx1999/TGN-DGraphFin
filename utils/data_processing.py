@@ -30,11 +30,11 @@ def get_data_node_classification(dataset_name, use_validation=False):
     labels = graph_df.label.values
     timestamps = graph_df.ts.values
 
-    sources = train_df.src.values
-    destinations = train_df.dst.values
-    edge_idxs = train_df.idx.values
-    labels = train_df.label.values
-    timestamps = train_df.ts.values
+    # sources = train_df.src.values
+    # destinations = train_df.dst.values
+    # edge_idxs = train_df.idx.values
+    # labels = train_df.label.values
+    # timestamps = train_df.ts.values
 
     full_data = Data(sources, destinations, timestamps, edge_idxs, labels)
     train_data = Data(train_df.src.values, train_df.dst.values, train_df.ts.values, train_df.idx.values, train_df.label.values)
@@ -53,7 +53,7 @@ def get_data(dataset_name, different_new_nodes_between_val_and_test=False, rando
     if randomize_features:
         node_features = np.random.rand(node_features.shape[0], node_features.shape[1])
 
-    val_time, test_time = list(np.quantile(graph_df.ts, [0.80, 0.90]))
+    val_time, test_time = list(np.quantile(graph_df.ts, [0.95, 0.98]))
 
     sources = graph_df.src.values
     destinations = graph_df.dst.values

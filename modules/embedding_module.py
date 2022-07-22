@@ -95,6 +95,7 @@ class GraphEmbedding(EmbeddingModule):
 
         # linear transform
         source_node_features = self.fc_nodes_feat(self.node_features[source_nodes_torch, :])
+        # source_node_features = self.node_features[source_nodes_torch, :]
 
 
         if self.use_memory:

@@ -56,7 +56,7 @@ cd scripts/
 bash pretrain_dgraphfin_lp_no_mem.sh
 ```
 
-Then, we use node embeddingd and pretrained model for downstream binary node classification task in 10 runs.
+Then, we use pretrained node embeddings and model for downstream binary node classification task in 10 runs.
 
 ```bash
 cd scripts/

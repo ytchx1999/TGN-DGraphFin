@@ -164,6 +164,7 @@ for i in range(args.n_runs):
     Path("results/").mkdir(parents=True, exist_ok=True)
     logger.info('-'*50)
     logger.info(f'Run {i}:')
+    set_seed(i)
 
     # Initialize Model
     tgn = TGN(neighbor_finder=train_ngh_finder, node_features=node_features, node_dim=args.node_dim, edge_dim=args.edge_dim,

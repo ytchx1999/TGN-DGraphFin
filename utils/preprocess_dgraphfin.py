@@ -9,6 +9,7 @@ from tqdm import tqdm
 
 def preprocess(data_name):
     OUT_DF = '../data/{}/ml_{}.csv'.format(data_name, data_name)
+    OUT_ALL_TRAIN_DF = '../data/{}/ml_{}_all_train.csv'.format(data_name, data_name)
     OUT_TRAIN_DF = '../data/{}/ml_{}_train.csv'.format(data_name, data_name)
     OUT_VAL_DF = '../data/{}/ml_{}_val.csv'.format(data_name, data_name)
     OUT_TEST_DF = '../data/{}/ml_{}_test.csv'.format(data_name, data_name)
@@ -55,13 +56,15 @@ def preprocess(data_name):
     val_ts_dst = {}
     test_ts_dst = {}
 
-    
+    all_train_idx_src = []
+    all_train_idx_dst = []
 
     for it, (s, d, t) in tqdm(enumerate(zip(src, dst, ts))):
         label_src[it] = y[s]
         label_dst[it] = y[d]
         # src node
         if s in train_mask:
+            all_train_idx_src.append(it)
             if (s in train_map_src) and train_ts_src[s] >= t:
                 pass
             else:
@@ -81,6 +84,7 @@ def preprocess(data_name):
                 test_ts_src[s] = t
         # dst node
         if d in train_mask:
+            all_train_idx_dst.append(it)
             if (d in train_map_dst) and train_ts_dst[d] >= t:
                 pass
             else:
@@ -136,6 +140,12 @@ def preprocess(data_name):
     train_ts =  np.concatenate([ts[train_idx_mask_src], ts[train_idx_mask_dst]])
     train_idx =  np.concatenate([idx[train_idx_mask_src], idx[train_idx_mask_dst]])
     train_label =  np.concatenate([label_src[train_idx_mask_src], label_dst[train_idx_mask_dst]])
+    
+    all_train_src = np.concatenate([src[all_train_idx_src], dst[all_train_idx_dst]])
+    all_train_dst =  np.concatenate([dst[all_train_idx_src], src[all_train_idx_dst]])
+    all_train_ts =  np.concatenate([ts[all_train_idx_src], ts[all_train_idx_dst]])
+    all_train_idx =  np.concatenate([idx[all_train_idx_src], idx[all_train_idx_dst]])
+    all_train_label =  np.concatenate([label_src[all_train_idx_src], label_dst[all_train_idx_dst]])
 
     val_src =  np.concatenate([src[val_idx_mask_src], dst[val_idx_mask_dst]])
     val_dst =  np.concatenate([dst[val_idx_mask_src], src[val_idx_mask_dst]])
@@ -150,6 +160,7 @@ def preprocess(data_name):
     test_label =  np.concatenate([label_src[test_idx_mask_src], label_dst[test_idx_mask_dst]])
 
     print(f'train nodes: {train_src.shape[0]}, val nodes: {val_src.shape[0]}, test nodes: {test_src.shape[0]}')
+    print(f'all train shape: {all_train_src.shape[0]}')
 
     df = pd.DataFrame({
         'src': src,
@@ -159,6 +170,15 @@ def preprocess(data_name):
         'idx': idx
     })
     df.sort_values("ts", inplace=True)
+
+    all_train_df = pd.DataFrame({
+        'src': all_train_src,
+        'dst': all_train_dst,
+        'ts': all_train_ts,
+        'label': all_train_label,
+        'idx': all_train_idx
+    })
+    all_train_df.sort_values("ts", inplace=True)
 
     train_df = pd.DataFrame({
         'src': train_src,
@@ -188,6 +208,7 @@ def preprocess(data_name):
     test_df.sort_values("ts", inplace=True)
 
     df.to_csv(OUT_DF)
+    all_train_df.to_csv(OUT_ALL_TRAIN_DF)
     train_df.to_csv(OUT_TRAIN_DF)
     val_df.to_csv(OUT_VAL_DF)
     test_df.to_csv(OUT_TEST_DF)
