@@ -11,8 +11,8 @@ class MergeLayer(torch.nn.Module):
         self.norm = torch.nn.LayerNorm(dim3)
         self.use_norm = use_norm
 
-        torch.nn.init.xavier_normal_(self.fc1.weight)
-        torch.nn.init.xavier_normal_(self.fc2.weight)
+        # torch.nn.init.xavier_normal_(self.fc1.weight)
+        # torch.nn.init.xavier_normal_(self.fc2.weight)
 
     def forward(self, x1, x2):
         x = torch.cat([x1, x2], dim=1)

@@ -18,6 +18,7 @@ class Data:
 def get_data_node_classification(dataset_name, use_validation=False):
     ### Load data and train val test split
     graph_df = pd.read_csv('./data/{}/ml_{}.csv'.format(dataset_name, dataset_name))
+    all_train_df = pd.read_csv('./data/{}/ml_{}_all_train.csv'.format(dataset_name, dataset_name))
     train_df = pd.read_csv('./data/{}/ml_{}_train.csv'.format(dataset_name, dataset_name))
     val_df = pd.read_csv('./data/{}/ml_{}_val.csv'.format(dataset_name, dataset_name))
     test_df = pd.read_csv('./data/{}/ml_{}_test.csv'.format(dataset_name, dataset_name))
@@ -30,6 +31,8 @@ def get_data_node_classification(dataset_name, use_validation=False):
     labels = graph_df.label.values
     timestamps = graph_df.ts.values
 
+    node_features = (node_features - np.mean(node_features, axis=0)) / np.std(node_features, axis=0)
+
     # sources = train_df.src.values
     # destinations = train_df.dst.values
     # edge_idxs = train_df.idx.values
@@ -38,6 +41,7 @@ def get_data_node_classification(dataset_name, use_validation=False):
 
     full_data = Data(sources, destinations, timestamps, edge_idxs, labels)
     train_data = Data(train_df.src.values, train_df.dst.values, train_df.ts.values, train_df.idx.values, train_df.label.values)
+    # train_data = Data(all_train_df.src.values, all_train_df.dst.values, all_train_df.ts.values, all_train_df.idx.values, all_train_df.label.values)
     val_data = Data(val_df.src.values, val_df.dst.values, val_df.ts.values, val_df.idx.values, val_df.label.values)
     test_data = Data(test_df.src.values, test_df.dst.values, test_df.ts.values, test_df.idx.values, test_df.label.values)
 
@@ -53,7 +57,7 @@ def get_data(dataset_name, different_new_nodes_between_val_and_test=False, rando
     if randomize_features:
         node_features = np.random.rand(node_features.shape[0], node_features.shape[1])
 
-    val_time, test_time = list(np.quantile(graph_df.ts, [0.95, 0.98]))
+    val_time, test_time = list(np.quantile(graph_df.ts, [0.995, 0.998]))  # val, test
 
     sources = graph_df.src.values
     destinations = graph_df.dst.values
@@ -62,6 +66,8 @@ def get_data(dataset_name, different_new_nodes_between_val_and_test=False, rando
     timestamps = graph_df.ts.values
 
     full_data = Data(sources, destinations, timestamps, edge_idxs, labels)
+
+    node_features = (node_features - np.mean(node_features, axis=0)) / np.std(node_features, axis=0)
 
     # random.seed(2020)
     train_mask = (timestamps <= val_time)

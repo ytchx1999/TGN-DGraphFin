@@ -23,7 +23,7 @@ class TGN(torch.nn.Module):
                  memory_updater_type="gru",
                  use_destination_embedding_in_message=False,
                  use_source_embedding_in_message=False,
-                 dyrep=False):
+                 dyrep=False, use_norm=True):
         super(TGN, self).__init__()
 
         self.n_layers = n_layers
@@ -35,6 +35,7 @@ class TGN(torch.nn.Module):
         self.edge_raw_features = torch.from_numpy(edge_type.astype(np.float32)).reshape(-1, 1).to(device)
         # self.edge_embedding = torch.nn.Embedding(edge_type.max() + 5, edge_dim).to(device) # torch.from_numpy(edge_features.astype(np.float32)).to(device)
         # torch.nn.init.xavier_normal_(self.edge_embedding.weight)
+        self.use_norm = use_norm
 
         self.n_node_features = node_dim # self.node_raw_features.shape[1] # 
         self.fc_nodes_feat = torch.nn.Linear(self.node_raw_features.shape[1], node_dim)
@@ -100,7 +101,7 @@ class TGN(torch.nn.Module):
         # MLP to compute probability on an edge given two node embeddings
         self.affinity_score = MergeLayer(self.n_node_features, self.n_node_features,
                                          self.n_node_features,
-                                         1)
+                                         1, use_norm=self.use_norm)
 
     def compute_temporal_embeddings(self, source_nodes, destination_nodes, negative_nodes, edge_times,
                                     edge_idxs, n_neighbors=20):

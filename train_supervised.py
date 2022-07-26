@@ -88,6 +88,7 @@ parser.add_argument('--seed', type=int, default=0, help='Seed for all')
 # parser.add_argument('--node_dim', type=int, default=100, help='Dimensions of the node embedding')
 parser.add_argument('--edge_dim', type=int, default=64, help='Dimensions of the node embedding')
 parser.add_argument('--pos_weight', type=float, default=1., help='Dropout probability')
+parser.add_argument('--no_norm', action='store_true', help='Whether to use LayerNorm in MergeLayer')
 
 try:
     args = parser.parse_args()
@@ -179,7 +180,7 @@ for i in range(args.n_runs):
               mean_time_shift_src=mean_time_shift_src, std_time_shift_src=std_time_shift_src,
               mean_time_shift_dst=mean_time_shift_dst, std_time_shift_dst=std_time_shift_dst,
               use_destination_embedding_in_message=args.use_destination_embedding_in_message,
-              use_source_embedding_in_message=args.use_source_embedding_in_message)
+              use_source_embedding_in_message=args.use_source_embedding_in_message, use_norm=(not args.no_norm))
 
     print(sum(p.numel() for p in tgn.parameters()))
     tgn = tgn.to(device)

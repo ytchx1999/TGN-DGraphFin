@@ -46,7 +46,7 @@ parser.add_argument('--n_head', type=int, default=2, help='Number of heads used 
 parser.add_argument('--n_epoch', type=int, default=20, help='Number of epochs')
 parser.add_argument('--n_layer', type=int, default=1, help='Number of network layers')
 parser.add_argument('--lr', type=float, default=0.001, help='Learning rate')
-parser.add_argument('--patience', type=int, default=3, help='Patience for early stopping')
+parser.add_argument('--patience', type=int, default=5, help='Patience for early stopping')
 parser.add_argument('--n_runs', type=int, default=1, help='Number of runs')
 parser.add_argument('--drop_out', type=float, default=0.1, help='Dropout probability')
 parser.add_argument('--gpu', type=int, default=0, help='Idx for the gpu to use')
@@ -84,6 +84,7 @@ parser.add_argument('--dyrep', action='store_true',
 parser.add_argument('--seed', type=int, default=0, help='Seed for all')
 # parser.add_argument('--node_dim', type=int, default=100, help='Dimensions of the node embedding')
 parser.add_argument('--edge_dim', type=int, default=32, help='Dimensions of the node embedding')
+parser.add_argument('--no_norm', action='store_true', help='Whether to use LayerNorm in MergeLayer')
 
 try:
     args = parser.parse_args()
@@ -182,7 +183,7 @@ for i in range(args.n_runs):
               mean_time_shift_dst=mean_time_shift_dst, std_time_shift_dst=std_time_shift_dst,
               use_destination_embedding_in_message=args.use_destination_embedding_in_message,
               use_source_embedding_in_message=args.use_source_embedding_in_message,
-              dyrep=args.dyrep)
+              dyrep=args.dyrep, use_norm=(not args.no_norm))
     criterion = torch.nn.BCELoss()
     optimizer = torch.optim.Adam(tgn.parameters(), lr=LEARNING_RATE)
     print(sum(p.numel() for p in tgn.parameters()))
