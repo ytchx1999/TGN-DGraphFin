@@ -226,7 +226,7 @@ for i in range(args.n_runs):
             sources_batch = train_data.sources[s_idx: e_idx]
             destinations_batch = train_data.destinations[s_idx: e_idx]
             timestamps_batch = train_data.timestamps[s_idx: e_idx]
-            edge_idxs_batch = full_data.edge_idxs[s_idx: e_idx]
+            edge_idxs_batch = full_data.edge_idxs[s_idx: e_idx] # 
             labels_batch = train_data.labels[s_idx: e_idx]
 
             size = len(sources_batch)
@@ -253,6 +253,9 @@ for i in range(args.n_runs):
                                            n_neighbors=NUM_NEIGHBORS)
         val_aucs.append(val_auc)
 
+        test_auc = eval_node_classification(tgn, decoder, test_data, full_data.edge_idxs, BATCH_SIZE,
+                                            n_neighbors=NUM_NEIGHBORS)
+
         pickle.dump({
             "val_aps": val_aucs,
             "train_losses": train_losses,
@@ -261,7 +264,7 @@ for i in range(args.n_runs):
         }, open(results_path, "wb"))
 
         logger.info(
-            f'Epoch {epoch}: train loss: {loss / num_batch}, val auc: {val_auc}, time: {time.time() - start_epoch}')
+            f'Epoch {epoch}: train loss: {loss / num_batch}, val auc: {val_auc}, val auc: {test_auc}, time: {time.time() - start_epoch}')
 
         # if args.use_validation:
         if early_stopper.early_stop_check(val_auc):

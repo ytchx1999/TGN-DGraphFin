@@ -1,7 +1,7 @@
 
 # TGN-DGraphFin
 
-This repo is the code of [TGN](https://arxiv.org/pdf/2006.10637.pdf) model on [Dgraph-Fin](https://dgraph.xinye.com/dataset) dataset.
+This repo is the code of [TGN](https://arxiv.org/pdf/2006.10637.pdf) model on [DGraph-Fin](https://dgraph.xinye.com/dataset) dataset.
 
 <!-- # TGN: Temporal Graph Networks [[arXiv](https://arxiv.org/abs/2006.10637), [YouTube](https://www.youtube.com/watch?v=W1GvX2ZcUmY), [Blog Post](https://towardsdatascience.com/temporal-graph-networks-ab8f327f2efe)] 
 
@@ -15,10 +15,10 @@ This repo is the code of [TGN](https://arxiv.org/pdf/2006.10637.pdf) model on [D
 
 - Dependencies: 
 ```{bash}
-python >= 3.7
-torch == 1.8.2+cu102
-pandas == 1.4.1
-sklearn == 1.0.2
+python==3.8
+torch==1.8.2+cu102
+pandas==1.4.1
+sklearn==1.0.2
 tqdm
 ...
 ```
@@ -67,11 +67,17 @@ bash downstream_dgraphfin_nc_no_mem.sh
 
 Performance on **DGraphFin** (10 runs):
 
-| Methods   | Train AUC  | Valid AUC  | Test AUC  |
-|  :----  | ----  |  ---- | ---- |
-| TGN-no-mem |  ±  |  ±  |  ±  |
+| Methods   |  Test AUC  | Valid AUC  |
+|  :----  | ---- | ---- |
+| TGN-no-mem |   ±  |  ±  |
 
-## 4. Note
+## 4. Future Work
+
+- Dynamic sampling based on imbalanced class
+- Combine TGN with anomaly detection methods
+- Improve memory in a more efficient way
+
+## 5. Note
 The implemention is based on [Temporal Graph Networks](https://github.com/twitter-research/tgn).
 
 

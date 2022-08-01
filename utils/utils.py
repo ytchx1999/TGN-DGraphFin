@@ -114,7 +114,7 @@ class NeighborFinder:
         for neighbors in adj_list:
             # Neighbors is a list of tuples (neighbor, edge_idx, timestamp)
             # We sort the list based on timestamp
-            sorted_neighhbors = sorted(neighbors, key=lambda x: x[2])
+            sorted_neighhbors = sorted(neighbors, key=lambda x: x[2])  # 2 is raw
             self.node_to_neighbors.append(np.array([x[0] for x in sorted_neighhbors]))
             self.node_to_edge_idxs.append(np.array([x[1] for x in sorted_neighhbors]))
             self.node_to_edge_timestamps.append(np.array([x[2] for x in sorted_neighhbors]))
@@ -136,6 +136,9 @@ class NeighborFinder:
 
         return self.node_to_neighbors[src_idx][:i], self.node_to_edge_idxs[src_idx][:i], self.node_to_edge_timestamps[
                                                                                              src_idx][:i]
+        # return self.node_to_neighbors[src_idx][:], self.node_to_edge_idxs[src_idx][:], self.node_to_edge_timestamps[
+        #                                                                                      src_idx][:]
+
 
     def get_temporal_neighbor(self, source_nodes, timestamps, n_neighbors=20):
         """
