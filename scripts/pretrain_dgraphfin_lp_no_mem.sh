@@ -3,16 +3,18 @@ cd "$(dirname $0)"
 python3 ../train_self_supervised.py \
 -d dgraphfin \
 --n_degree 20 \
---bs 512 \
---n_epoch 20 \
+--bs 200 \
+--n_epoch 30 \
 --n_layer 2 \
---lr 0.001 \
---prefix tgn-no-mem \
+--lr 0.0001 \
+--prefix tgn-no-mem-uniform-ds \
 --n_runs 1 \
 --drop_out 0.1 \
 --gpu 7 \
---node_dim 100 \
---time_dim 100 \
---message_dim 100 \
---memory_dim 100 
+--node_dim 128 \
+--time_dim 128 \
+--message_dim 128 \
+--memory_dim 128 \
+--seed 0 \
+--uniform
 
