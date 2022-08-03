@@ -4,7 +4,7 @@ python3 ../train_self_supervised.py \
 -d dgraphfin \
 --n_degree 20 \
 --bs 200 \
---n_epoch 30 \
+--n_epoch 25 \
 --n_layer 2 \
 --lr 0.0001 \
 --prefix tgn-no-mem-uniform-ds \
