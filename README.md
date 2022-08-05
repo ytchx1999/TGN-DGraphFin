@@ -7,7 +7,7 @@ Performance on **DGraphFin** (10 runs):
 
 | Methods   |  Test AUC  | Valid AUC  |
 |  :----  | ---- | ---- |
-| TGN-no-mem |  0.7740 ± 0.0003 | 0.7591 ± 0.0008 |
+| TGN-no-mem |  0.7741 ± 0.0003 | 0.7591 ± 0.0008 |
 
 <!-- TGN-no-mem achieves top-3 performance on DGraphFin (top-2 performence without extra data) until August 22, 2022 ([https://dgraph.xinye.com/leaderboards/dgraphfin](https://dgraph.xinye.com/leaderboards/dgraphfin)).  -->
 
