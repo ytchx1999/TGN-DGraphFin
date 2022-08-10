@@ -1,7 +1,7 @@
 
 # TGN for anomaly detection in DGraph-Fin
 
-This repo is the code of [TGN](https://arxiv.org/pdf/2006.10637.pdf) model on [DGraph-Fin](https://dgraph.xinye.com/dataset) dataset. ([DGraph-Fin Leaderboard](https://dgraph.xinye.com/leaderboards/dgraphfin))
+This repo is the code of [TGN](https://arxiv.org/pdf/2006.10637.pdf) model on [DGraph-Fin](https://dgraph.xinye.com/dataset) dataset.
 
 Performance on **DGraphFin** (10 runs):
 
@@ -9,7 +9,7 @@ Performance on **DGraphFin** (10 runs):
 |  :----  | ---- | ---- |
 | TGN-no-mem |  0.7741 ± 0.0003 | 0.7591 ± 0.0008 |
 
-<!-- TGN-no-mem achieves top-3 performance on DGraphFin (top-2 performence without extra data) until August 22, 2022 ([https://dgraph.xinye.com/leaderboards/dgraphfin](https://dgraph.xinye.com/leaderboards/dgraphfin)).  -->
+`TGN-no-mem` achieves top-3 performance on DGraphFin (top-2 performence without Extra Data) until August, 2022. ([DGraph-Fin Leaderboard](https://dgraph.xinye.com/leaderboards/dgraphfin))
 
 
 ## 1. Setup 
