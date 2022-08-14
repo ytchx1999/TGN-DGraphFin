@@ -9,7 +9,7 @@ Performance on **DGraphFin** (10 runs):
 |  :----  | ---- | ---- |
 | TGN-no-mem |  0.7741 ± 0.0003 | 0.7591 ± 0.0008 |
 
-`TGN-no-mem` achieves top-3 performance on DGraphFin (top-2 performence without Extra Data) until August, 2022. ([DGraph-Fin Leaderboard](https://dgraph.xinye.com/leaderboards/dgraphfin))
+`TGN-no-mem` achieves top-2 performance on DGraphFin until August, 2022. ([DGraph-Fin Leaderboard](https://dgraph.xinye.com/leaderboards/dgraphfin))
 
 
 ## 1. Setup 
